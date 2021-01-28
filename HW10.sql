@@ -1,4 +1,4 @@
-USE vk_10;
+USE vk_10; -- I created replica of initian DB to prevent crash or anything bad with original DB
 SHOW tables;
 DESC users;
 -- CREATE INDEX users_email_idx ON users(email);
