@@ -111,9 +111,13 @@ BEGIN
 	VALUES ('aliens',NEW.id, NEW.name, CURRENT_TIMESTAMP);
 END;
 
+-- check if everything works correct
 SELECT name_insert (10);
 SELECT COUNT(id) FROM aliens a ;
 SELECT * FROM aliens_logs;
+-- real call of name_insert(1000000) drops my vm down for unknown reason (RAM maybe?)
+-- so I did 250k per call and called function 4 times
+SELECT name_insert (250000);
 
 
 
