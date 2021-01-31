@@ -1,0 +1,69 @@
+-- 1# user-ip - the string which contrains ip of user
+
+INCR user_ip  -- user-ip - the string which contrains ip of user
+
+-- #2 on creation user we should create set of bidirectional keys
+
+SET Ann ann@example.com
+SET ann@example.com Ann
+
+-- When needed we can call both name and email
+GET Ann
+GET ann@example.com
+
+-- probably it is possible to do with sorted set
+-- on creation we assign same score in two set "names" and "mails"
+
+ZADD names 1 Ann
+ZADD mails 1 ann@exampZREVRANKle.com
+ZADD names 2 Helen
+ZADD mails 2 helen@example.com
+
+-- When we call name or mail from its set we get score of element
+ZSCORE names Helen
+"1"
+  
+-- this value we send to another table. mails now
+ZRANGEBYSCORE mails 1 1 
+1) "helen@exampole.com"
+
+
+-- #3 we can save our product together with catalogs, actually inside it
+-- I think it is more or less OK in MongoDB to have smth like this
+db.shop.insert(
+  {catalog_name: 'Процессоры',
+   products: 
+     {product:
+        [{prod_name: 'Intel Core i3-8100',
+          prod_description: 'Процессор для настольных персональных компьютеров, основанных на платформе Intel.',
+          price: 7890.00,
+          created_at: '2021-01-17 02:48:14',
+          updated_at: '2021-01-17 02:48:14'
+        }]
+     }
+  }
+)
+
+-- When new item is to be added in existing catalog we:
+db.shop.update(
+  {catalog_name: 'Процессоры'}, 
+  {$push:
+     {'products.product': 
+	{prod_name: 'Intel Core i5-7400',
+         prod_description: 'Процессор для настольных персональных компьютеров, основанных на платформе Intel.',
+         price: 12700.00,
+         created_at: '2021-01-17 02:48:55',
+         updated_at: '2021-01-17 02:48:55'
+        }
+     }
+  }
+)
+
+-- I'm not sure I have understood the task correctly, 
+-- but this way is seemed to be acceptable.
+-- In this structure we can easily form lists of catalogs 
+-- and list of products inside every catalog or global list
+
+
+
+
